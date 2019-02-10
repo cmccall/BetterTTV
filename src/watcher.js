@@ -21,6 +21,7 @@ let channel = {};
 
 const loadPredicates = {
     following: () => !!$('.following__header-tabs').length,
+    live: () => !!String($('.tw-tab__link--active').attr('href')).endsWith('live'),
     channel: () => {
         const href = $('.channel-header__user-avatar img').attr('src') || $('h3[data-test-selector="side-nav-channel-info__name_link"] a').attr('href');
         const currentChannel = twitch.updateCurrentChannel();
@@ -221,6 +222,10 @@ class Watcher extends SafeEventEmitter {
                     break;
                 case routes.DASHBOARD:
                     this.waitForLoad('chat').then(() => this.emit('load.chat'));
+                    break;
+                case routes.DIRECTORY_FOLLOWING_LIVE:
+                    this.waitForLoad('live').then(() => this.emit('load.directory.live'));
+                    break;
             }
         };
 
